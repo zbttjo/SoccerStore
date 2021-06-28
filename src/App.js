@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { BrowserRouter as Router } from "react-router-dom";
+import Header from './components/Header';
+import Menu from './components/Menu';
+import Backdrop from './components/Backdrop';
+import Main from './components/Main';
+import Footer from './components/Footer'
+import './css/app.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    MenuOpen: false
+  };
+
+  menuClickHandler = () => {
+    this.setState((prevState) => {
+      return { MenuOpen: !prevState.MenuOpen };
+    })
+  };
+
+  backdropClickHandler = () => {
+    this.setState({ MenuOpen: false });
+  };
+
+  render() {
+    let menu;
+    let backdrop;
+
+    if (this.state.MenuOpen) {
+      menu = <Menu />;
+      backdrop = <Backdrop click={this.backdropClickHandler} />;
+    };
+
+    return (
+      <Router>
+        <div className="app">
+          <Header menuOpenClickHandler={this.menuClickHandler} />
+          {menu}
+          {backdrop}
+          <Main />
+          <Footer />
+        </div>
+      </Router>
+    )
+  }
 }
 
-export default App;
+
+export default App
